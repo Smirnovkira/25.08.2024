@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -27,24 +27,25 @@
       height: auto;
     }
 
-    /* Блок с галереей */
-.gallery-container {
-  position: relative;   /* теперь можно позиционировать элементы внутри */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: -86vh;
-  width: 100%;
-}
+    /* Контейнер */
+    .gallery-container {
+      position: relative;   
+      margin-top: -75vh;  /* твое значение */
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
+    /* Галерея */
     .gallery {
       cursor: pointer;
-      flex: 0 1 60%;
       text-align: center;
+      z-index: 1; /* выше кнопок */
     }
 
     .frame {
-      max-width: 100%;
+      max-width: 60%;
       height: auto;
       transition: opacity 0.5s ease;
     }
@@ -55,27 +56,23 @@
       border: none;
       cursor: pointer;
       outline: none;
+      position: absolute; /* фиксируем */
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
     }
 
-    /* Левая кнопка */
-  .btn.prev {
-  position: absolute;
-  left: 3vw;     /* отступ от левого края */
-  top: 50%;
-  transform: translateY(-50%);
-}
+    .btn.prev {
+      left: 3vw;   /* твое значение */
+    }
 
-/* правая кнопка */
-.btn.next {
-  position: absolute;
-  right: 5vw;    /* отступ от правого края */
-  top: 50%;
-  transform: translateY(-50%);
-}
+    .btn.next {
+      right: 5vw;  /* твое значение */
+    }
 
     .btn img {
-      width: 150px;
-      height: 150px;
+      width: 80px;  /* твое значение */
+      height: 80px; /* твое значение */
     }
 
     /* Модалка */
