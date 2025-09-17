@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>SVG Сайт с Галереей</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: sans-serif;
+    }
+
+    .site-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Первая SVG = сам сайт */
+    .site-bg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Контейнер галереи поверх первой SVG */
+    .gallery {
+      position: absolute;
+      top: 337%;   /* твое значение */
+      left: 53%;
+      transform: translateX(-50%);
+      width: 60%;
+      text-align: center;
+      cursor: pointer; /* кликабельно для модалки */
+      outline: none;
+    }
+
+    .frame {
+      position: relative;
+      max-width: 70%;
+      height: auto;
+      z-index: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    /* Кнопки */
+    .btn {
+      position: absolute;
+      top: 351%;   /* твое значение */
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 2;
+      outline: none;
+    }
+
+    .btn img {
+      width: 120px;  /* твое значение */
+      height: 120px; /* твое значение */
+    }
+
+    .btn.prev { left: 4%; }
+    .btn.next { right: 7%; }
+
+    /* --- Модальное окно --- */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .modal-content {
+      position: relative;
+      background: transparent; /* прозрачный фон */
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+      max-width: 80%;
+      max-height: 80%;
+    }
+
+    .modal-content img {
+      background: transparent;
+      border: none;
+      outline: none;
+      box-shadow: none;
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 28px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="site-wrapper">
+    <!-- Первая SVG — сама страница -->
+    <img src="сайт 2 (25.08.2024).svg" class="site-bg" alt="Сайт">
+
+    <!-- Галерея -->
+    <div class="gallery" onclick="openModal()">
+      <img id="frame" src="Frame 96.svg" class="frame" alt="Frame">
+    </div>
+
+    <!-- Кнопки -->
+    <button class="btn prev" onclick="prevSlide()">
+      <img src="Group 1963.svg" alt="Назад">
+    </button>
+    <button class="btn next" onclick="nextSlide()">
+      <img src="Group 1962.svg" alt="Вперёд">
+    </button>
+  </div>
+
+  <!-- Модальное окно -->
+  <div id="modal" class="modal" onclick="closeModal(event)">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal(event)">&times;</span>
+      <img id="modal-img" src="" alt="Modal Frame">
+    </div>
+  </div>
+
+  <script>
+    const frames = [
+      { img: "Frame 96.svg", title: "Frame 96" },
+      { img: "Frame 97.svg", title: "Frame 97" },
+      { img: "Frame 100.svg", title: "Frame 100" },
+      { img: "Frame 103.svg", title: "Frame 103" },
+      { img: "Frame 108.svg", title: "Frame 108" },
+      { img: "Frame 109.svg", title: "Frame 109" },
+      { img: "Frame 106.svg", title: "Frame 106" },
+      { img: "Frame 103 (1).svg", title: "Frame 103 (1)" },
+      { img: "Frame 106 (1).svg", title: "Frame 106 (1)" },
+      { img: "Frame 93.svg", title: "Frame 93" },
+      { img: "Frame 107.svg", title: "Frame 107" },
+      { img: "Frame 100 (1).svg", title: "Frame 100 (1)" }
+    ];
+
+    // Соответствия блоков и картинок для модалки
+    const modalMap = {
+      "Frame 96.svg": "Frame 88.svg",
+      "Frame 103.svg": "Frame 83.svg",
+      "Frame 108.svg": "Frame 91.svg",
+      "Frame 109.svg": "Frame 89.svg",
+      "Frame 97.svg": "Frame 85.svg",
+      "Frame 100.svg": "Frame 87.svg",
+      "Frame 106.svg": "Frame 92.svg",
+      "Frame 103 (1).svg": "Frame 82.svg",
+      "Frame 106 (1).svg": "Frame 90.svg",
+      "Frame 93.svg": "Frame 81.svg",
+      "Frame 107.svg": "Frame 86.svg",
+      "Frame 100 (1).svg": "Frame 84.svg"
+    };
+
+    let index = 0;
+    const frameImg = document.getElementById("frame");
+
+    function showSlide(i) {
+      index = (i + frames.length) % frames.length;
+      frameImg.style.opacity = 0;
+      setTimeout(() => {
+        frameImg.src = frames[index].img;
+        frameImg.style.opacity = 1;
+      }, 300);
+    }
+
+    function nextSlide() { showSlide(index + 1); }
+    function prevSlide() { showSlide(index - 1); }
+
+    // --- Модалка ---
+    function openModal() {
+      const currentImg = frames[index].img;
+      if (modalMap[currentImg]) {
+        document.getElementById("modal-img").src = modalMap[currentImg];
+        document.getElementById("modal").style.display = "flex";
+      }
+    }
+
+    function closeModal(e) {
+      if (e.target.classList.contains("modal") || e.target.classList.contains("modal-close")) {
+        document.getElementById("modal").style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
